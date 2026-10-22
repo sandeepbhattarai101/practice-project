@@ -1,0 +1,32 @@
+# Integration tests run against a REAL Postgres database (practice_test, created by
+# scripts/db-init on the container's first boot). Never point this at your dev database:
+# the tests truncate every table between cases.
+spring:
+  datasource:
+    url: ${TEST_DATABASE_URL:jdbc:postgresql://localhost:5434/practice_test}
+    username: practice
+    password: practice
+  mail:
+    host: localhost
+    port: 1026
+  # Spring Session identifies sessions by cookie, which MockMvc's MockHttpSession bypasses.
+  # Tests use plain container sessions; the JDBC session store is exercised by the running app.
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
+
+app:
+  jobs:
+    enabled: false      # tests call jobs explicitly instead of racing a scheduler
+  seed:
+    enabled: false
+  payments:
+    dev-sandbox-enabled: true
+    esewa:
+      enabled: false    # no outbound calls to eSewa from tests
+  frontend-url: http://frontend.test
+  public-base-url: http://backend.test
+
+logging:
+  level:
+    root: WARN
+    com.practiceproject: INFO

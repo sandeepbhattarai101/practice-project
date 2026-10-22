@@ -1,0 +1,205 @@
+@import 'tailwindcss';
+
+/*
+ * Practice Project design tokens. One accent (warm gold), near-black surfaces,
+ * off-white text with two muted greys tuned for WCAG AA on the canvas.
+ */
+@theme {
+  --color-canvas: #07070a;
+  --color-surface: #0e0e13;
+  --color-elevated: #15151c;
+  --color-raised: #1c1c25;
+  --color-line: #262631;
+  --color-line-strong: #34343f;
+
+  --color-fg: #f3efe8;
+  --color-muted: #b0adb7;
+  --color-subtle: #8a8792;
+
+  --color-accent: #f5b544;
+  --color-accent-strong: #ffc962;
+  --color-accent-soft: rgb(245 181 68 / 0.12);
+  --color-accent-ink: #1a1205;
+
+  --color-success: #5cc98d;
+  --color-warning: #f0913c;
+  --color-danger: #f06565;
+  --color-info: #7aa7f0;
+
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 32px -16px rgb(0 0 0 / 0.8);
+  --shadow-pop: 0 24px 60px -20px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(255 255 255 / 0.04);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-in: fade-in 200ms var(--ease-out-soft);
+  --animate-pop-in: pop-in 200ms var(--ease-out-soft);
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes hero-progress {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-canvas);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  img {
+    max-width: 100%;
+  }
+  button:not(:disabled), [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-subtle);
+  }
+  .container-page {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 640px) {
+    .container-page { padding-inline: 24px; }
+  }
+  @media (min-width: 1024px) {
+    .container-page { padding-inline: 32px; }
+  }
+
+  /* Film grain + vignette for hero areas only. */
+  .hero-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-vignette {
+    background:
+      linear-gradient(to top, var(--color-canvas) 0%, rgb(7 7 10 / 0.85) 28%, rgb(7 7 10 / 0.2) 62%, rgb(7 7 10 / 0.55) 100%),
+      linear-gradient(to right, rgb(7 7 10 / 0.92) 0%, rgb(7 7 10 / 0.45) 45%, transparent 75%);
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-elevated) 0%, var(--color-raised) 50%, var(--color-elevated) 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+
+  .seat-held {
+    background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.14) 0 2px, transparent 2px 6px);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pb-safe {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Printing a ticket: only the element marked .print-ticket is shown. */
+@media print {
+  @page { margin: 12mm; }
+  html, body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  .print-ticket, .print-ticket *, .print-area, .print-area * {
+    visibility: visible !important;
+  }
+  .print-ticket, .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff !important;
+    color: #111 !important;
+    border: 1px solid #999 !important;
+    box-shadow: none !important;
+  }
+  .print-ticket .print-muted, .print-area .print-muted { color: #444 !important; }
+  .print-area { border: 0 !important; }
+  .print-area * { color: #111 !important; border-color: #bbb !important; background: transparent !important; }
+  .print-hide { display: none !important; }
+}

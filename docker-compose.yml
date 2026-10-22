@@ -1,0 +1,34 @@
+# Local infrastructure for Practice Project.
+# Ports are deliberately offset from the sterling-wells stack (5432/1025/8025)
+# so both can run side by side.
+name: practice-project
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pp-postgres
+    environment:
+      POSTGRES_USER: practice
+      POSTGRES_PASSWORD: practice
+      POSTGRES_DB: practice
+    ports:
+      - "5434:5432"
+    volumes:
+      - pp-postgres-data:/var/lib/postgresql/data
+      - ./scripts/db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U practice -d practice"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mailpit:
+    # Catches every outgoing email locally. Inbox UI: http://localhost:8026
+    image: axllent/mailpit:latest
+    container_name: pp-mailpit
+    ports:
+      - "1026:1025"
+      - "8026:8025"
+
+volumes:
+  pp-postgres-data:

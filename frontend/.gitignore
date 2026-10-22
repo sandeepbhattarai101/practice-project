@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+*.local
+.env
+e2e/screenshots
+e2e/report
+test-results

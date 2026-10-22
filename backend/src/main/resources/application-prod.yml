@@ -1,0 +1,23 @@
+# Activated with SPRING_PROFILES_ACTIVE=prod. ProductionSafetyCheck refuses to start
+# if any development default is still in place.
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true
+
+app:
+  seed:
+    enabled: false
+  payments:
+    dev-sandbox-enabled: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: INFO

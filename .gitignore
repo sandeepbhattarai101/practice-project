@@ -1,0 +1,30 @@
+# Dependencies and build output
+node_modules/
+frontend/dist/
+backend/build/
+backend/.gradle/
+backend/bin/
+.gradle/
+
+# Test output
+frontend/coverage/
+frontend/test-results/
+frontend/e2e/screenshots/
+frontend/e2e/report/
+
+# Local configuration and secrets — never commit real keys
+.env
+.env.*
+!.env.example
+*.local
+
+# QFX snapshot: copyrighted synopses and poster links, for local development only.
+# Regenerate with: node scripts/import-qfx-catalogue.mjs
+backend/src/main/resources/seed/qfx-now-showing.json
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
